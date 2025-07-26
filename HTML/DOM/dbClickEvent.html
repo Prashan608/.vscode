@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+   <div id="1" style="height: 200px; width: 200px; background-color: blue;"></div> 
+</body>
+<script>
+    isblue = true;
+    let div = document.getElementById("1");
+    div.addEventListener("dblclick",()=>{
+      div.style.backgroundColor = isblue?"black":"blue";
+    })
+</script>
+</html>

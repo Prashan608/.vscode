@@ -1,0 +1,36 @@
+<!-- Create a basic HTML page to demonstrate your understanding of the DOM and its structure. Your task is to write JavaScript that performs the following actions:
+
+Select the <h1> element by its id and change its text content to "Welcome to the DOM World!".
+Select all <p> elements using getElementsByTagName and set their text color to blue.
+Use querySelector to select the first <div> with the class container and change its background color to yellow.
+Ensure that your HTML structure includes at least one <h1>, multiple <p> elements, and a <div> with the class container. -->
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Document</title>
+    </head>
+    <body>
+       <h1 id = "1">heading 1</h1>
+       <p>hello</p>
+       <p>how are you</p>
+       <p>are you there</p>
+       <p>are you avaliable</p>
+       <div class="container">i am div 1</div> 
+       <div class="container">i am div 2</div>
+       <div class='container'>i am div 3</div>
+       <div class="container">i am div 4</div>
+    </body>
+      <script>
+        let h1 = document.getElementById("1");
+        h1.innerText = "Welcome to the DOM World!"
+        let pTag = document.getElementsByTagName("p");
+        for(let i = 0; i<pTag.length;i++){
+            pTag[i].style.color = "blue"
+        }
+        let div = document.querySelector(".container");
+        div.style.backgroundColor = "yellow";
+
+      </script>
+    </html>

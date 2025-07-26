@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <div id = "1">
+    <p>i am inside parent div</p>
+  </div>
+  <p id = "2">this p tag have id</p>
+  <p class = "red">hello</p>
+  <p class = "red">how are you</p>
+  <p class = "red">is everything good</p>
+  <p class = "red">so far so good</p>
+</body>
+<script> 
+ let p = document.getElementById("2");
+  p.innerText = "Change with the dom";
+  p.style.color = "yellow";
+  p.style.fontSize = "50px";
+
+let div = document.getElementById("1")
+//div.innerHTML = "<p>this p tag added from DOM</p>";
+div.innerHTML = "<p>this p tag added Second time from DOM</p>";
+</script>
+</html>

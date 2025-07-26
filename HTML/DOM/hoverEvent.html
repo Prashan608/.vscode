@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+  <div id="hoverId" style = "height: 200px;width: 200px;background-color: lightskyblue;"></div> 
+</body>
+<script>
+    let div = document.getElementById("hoverId");
+    div.addEventListener("mouseover",()=>{
+        div.style.backgroundColor = "yellow"
+    })
+
+    div.addEventListener("mouseout",()=>{
+        div.style.backgroundColor = "lightskyblue"
+    })
+</script>
+</html>
