@@ -1,0 +1,38 @@
+<!-- Build a page with the following structure:
+<div id="container">
+  <ul id="list">
+    <li id="item1">Item 1</li>
+    <li id="item2">Item 2</li>
+    <li id="item3">Item 3</li>
+  </ul>
+</div>
+Implement the following JavaScript functionality:
+When the user clicks on "Item 2", the following should happen:
+Display the text content of its parent node (<ul>) in an alert.
+Log the text content of its next and previous siblings (<li> elements) to the console. -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Item 2 Click </title>
+</head>
+<body>
+  <div id="container">
+    <ul id="list">
+      <li id="item1">Item 1</li>
+      <li id="item2">Item 2</li>
+      <li id="item3">Item 3</li>
+    </ul>
+  </div>
+
+  <script>
+    let item2 = document.getElementById("item2");
+
+    item2.addEventListener("click", function () {
+      alert(this.parentNode.textContent);
+      console.log("Previous Sibling:", this.previousElementSibling.textContent);
+      console.log("Next Sibling:", this.nextElementSibling.textContent);
+    });
+  </script>
+</body>
+</html>
