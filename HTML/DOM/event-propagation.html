@@ -1,0 +1,67 @@
+<!-- Create a web page with three nested div elements, each containing a button.
+
+Add event listeners to all three div elements and their buttons. These listeners should display an alert with the name of the div or button when clicked.
+Test and demonstrate event propagation in both bubbling and capturing phases.
+Add a feature to stop event propagation when clicking the innermost button. -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Event Propagation</title>
+</head>
+<body>
+  <div id="div1" style="height: 200px; width: 200px; background-color: lightcoral; padding: 10px;">
+    <button id="btn1">Click Me (Div 1)</button>
+    <div id="div2" style="height: 150px; width: 150px; background-color: lightblue; padding: 10px;">
+      <button id="btn2">Click Me (Div 2)</button>
+      <div id="div3" style="height: 100px; width: 100px; background-color: lightgreen; padding: 10px;">
+        <button id="btn3">Click Me (Div 3)</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let div1 = document.getElementById("div1");
+    let div2 = document.getElementById("div2");
+    let div3 = document.getElementById("div3");
+
+    let btn1 = document.getElementById("btn1");
+    let btn2 = document.getElementById("btn2");
+    let btn3 = document.getElementById("btn3");
+
+    // Event listeners for divs (bubbling phase)
+    div1.addEventListener("click", () => {
+      alert("Div 1 clicked (bubbling)");
+    });
+
+    div2.addEventListener("click", () => {
+      alert("Div 2 clicked (bubbling)");
+    });
+
+    div3.addEventListener("click", () => {
+      alert("Div 3 clicked (bubbling)");
+    });
+
+    // Event listener for div1 (capturing phase)
+    div1.addEventListener("click", () => {
+      alert("Div 1 clicked (capturing)");
+    }, true);
+
+    // Event listeners for buttons
+    btn1.addEventListener("click", (e) => {
+      alert("Button in Div 1 clicked");
+    });
+
+    btn2.addEventListener("click", (e) => {
+      alert("Button in Div 2 clicked");
+    });
+
+    btn3.addEventListener("click", (e) => {
+      alert("Button in Div 3 clicked - Stopping Propagation");
+      e.stopPropagation(); // 🔴 Important
+    });
+  </script>
+</body>
+</html>
