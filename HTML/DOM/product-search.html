@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Product Search Page</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <style>
+    .product-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 20px;
+      margin-top: 20px;
+    }
+
+    .product-card {
+      background: #fff;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      padding: 10px;
+      text-align: center;
+    }
+
+    .product-card img {
+      max-width: 100%;
+      height: 150px;
+      object-fit: contain;
+      margin-bottom: 10px;
+    }
+
+    .loader,
+    .error {
+      margin-top: 20px;
+      font-weight: bold;
+      text-align: center;
+    }
+
+    .error {
+      color: red;
+    }
+  </style>
+</head>
+<body class="container py-4">
+  <h2>Product Search</h2>
+
+  <div class="row g-3 align-items-end mb-4">
+    <div class="col-md-3">
+      <label class="form-label">Category</label>
+      <select id="category" class="form-select">
+        <option value="electronics">Electronics</option>
+        <option value="clothing">Clothing</option>
+        <option value="books">Books</option>
+      </select>
+    </div>
+
+    <div class="col-md-2">
+      <label class="form-label">Min Price</label>
+      <input type="number" id="minPrice" class="form-control" placeholder="1000" />
+    </div>
+
+    <div class="col-md-2">
+      <label class="form-label">Max Price</label>
+      <input type="number" id="maxPrice" class="form-control" placeholder="5000" />
+    </div>
+
+    <div class="col-md-2">
+      <label class="form-label">Sort</label>
+      <select id="sortOrder" class="form-select">
+        <option value="asc">Price Low to High</option>
+        <option value="desc">Price High to Low</option>
+      </select>
+    </div>
+
+    <div class="col-md-2">
+      <button class="btn btn-primary w-100" onclick="searchProducts()">Search</button>
+    </div>
+  </div>
+
+  <div id="loader" class="loader d-none">Loading...</div>
+  <div id="error" class="error d-none">Something went wrong. Please try again.</div>
+
+  <div id="productList" class="product-grid"></div>
+
+  <script>
+    async function searchProducts() {
+      const category = document.getElementById("category").value;
+      const minPrice = document.getElementById("minPrice").value;
+      const maxPrice = document.getElementById("maxPrice").value;
+      const sort = document.getElementById("sortOrder").value;
+
+      const loader = document.getElementById("loader");
+      const error = document.getElementById("error");
+      const productList = document.getElementById("productList");
+
+      productList.innerHTML = "";
+      error.classList.add("d-none");
+      loader.classList.remove("d-none");
+
+      let baseURL = "https://mockapi.io/products"; // replace with actual mock API if different
+
+      let queryParams = new URLSearchParams();
+      if (category) queryParams.append("category", category);
+      if (minPrice) queryParams.append("min_price", minPrice);
+      if (maxPrice) queryParams.append("max_price", maxPrice);
+      if (sort) queryParams.append("sort", sort);
+
+      let fullURL = `${baseURL}?${queryParams.toString()}`;
+
+      try {
+        const response = await fetch(fullURL);
+        if (!response.ok) throw new Error("Failed to fetch");
+
+        const products = await response.json();
+
+        if (products.length === 0) {
+          productList.innerHTML = "<p class='text-muted'>No products found.</p>";
+        } else {
+          products.forEach((product) => {
+            const card = document.createElement("div");
+            card.className = "product-card";
+
+            card.innerHTML = `
+              <img src="${product.image || 'https://via.placeholder.com/150'}" alt="${product.name}" />
+              <h5>${product.name}</h5>
+              <p>$${product.price}</p>
+            `;
+
+            productList.appendChild(card);
+          });
+        }
+      } catch (err) {
+        console.error(err);
+        error.classList.remove("d-none");
+      } finally {
+        loader.classList.add("d-none");
+      }
+    }
+  </script>
+</body>
+</html>
