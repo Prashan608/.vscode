@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Create Post</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 40px;
+    }
+    form {
+      max-width: 400px;
+      margin-bottom: 20px;
+    }
+    input, textarea, button {
+      width: 100%;
+      margin-bottom: 10px;
+      padding: 10px;
+      font-size: 16px;
+    }
+    button {
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #45a049;
+    }
+    .response-box {
+      border-left: 4px solid #4CAF50;
+      padding: 15px;
+      background-color: #f4f4f4;
+      max-width: 400px;
+    }
+  </style>
+</head>
+<body>
+
+  <h2>Create a New Post</h2>
+  
+  <form id="postForm">
+    <input type="text" id="title" placeholder="Enter title" required />
+    <textarea id="body" placeholder="Enter body" rows="5" required></textarea>
+    <button type="submit">Submit Post</button>
+  </form>
+
+  <div id="response" class="response-box" style="display: none;"></div>
+
+  <script>
+    const form = document.getElementById('postForm');
+    const responseBox = document.getElementById('response');
+
+    form.addEventListener('submit', function (event) {
+      event.preventDefault();
+
+      const title = document.getElementById('title').value.trim();
+      const body = document.getElementById('body').value.trim();
+
+      if (!title || !body) {
+        alert('Both Title and Body are required!');
+        return;
+      }
+
+      const postData = {
+        title: title,
+        body: body,
+        userId: 1  // This is a dummy user ID
+      };
+
+      fetch('https://jsonplaceholder.typicode.com/posts', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json; charset=UTF-8'
+        },
+        body: JSON.stringify(postData)
+      })
+      .then(response => response.json())
+      .then(data => {
+        responseBox.style.display = 'block';
+        responseBox.innerHTML = `
+          <h3>Post Created Successfully</h3>
+          <p><strong>ID:</strong> ${data.id}</p>
+          <p><strong>Title:</strong> ${data.title}</p>
+          <p><strong>Body:</strong> ${data.body}</p>
+        `;
+        form.reset();
+      })
+      .catch(error => {
+        responseBox.style.display = 'block';
+        responseBox.innerHTML = `<p style="color:red;">Failed to create post. Please try again later.</p>`;
+        console.error('Error:', error);
+      });
+    });
+  </script>
+
+</body>
+</html>
