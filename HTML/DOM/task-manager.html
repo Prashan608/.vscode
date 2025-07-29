@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Task Manager App</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body {
+      padding: 40px;
+    }
+    .task-item {
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      padding: 15px;
+      margin-bottom: 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .task-item span {
+      flex-grow: 1;
+    }
+    .edit-input {
+      width: 60%;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Task Manager</h2>
+    <div id="taskList" class="mt-4"></div>
+  </div>
+
+  <script>
+    const baseURL = "https://mockapi.io/tasks"; // 🔁 Replace with your real MockAPI endpoint
+
+    const taskList = document.getElementById('taskList');
+
+    async function fetchTasks() {
+      try {
+        const res = await fetch(baseURL);
+        const data = await res.json();
+        displayTasks(data);
+      } catch (err) {
+        taskList.innerHTML = `<p class="text-danger">Failed to load tasks. Try again later.</p>`;
+        console.error(err);
+      }
+    }
+
+    function displayTasks(tasks) {
+      taskList.innerHTML = '';
+      tasks.forEach(task => {
+        const taskDiv = document.createElement('div');
+        taskDiv.className = 'task-item';
+        taskDiv.innerHTML = `
+          <span>
+            <strong>${task.title}</strong> 
+            <small class="text-muted">(${task.status})</small>
+          </span>
+          <button class="btn btn-sm btn-warning me-2" onclick="editTask('${task.id}', '${task.title}', '${task.status}')">Edit</button>
+          <button class="btn btn-sm btn-danger" onclick="deleteTask('${task.id}')">Delete</button>
+        `;
+        taskList.appendChild(taskDiv);
+      });
+    }
+
+    async function editTask(id, currentTitle, currentStatus) {
+      const newTitle = prompt("Edit task title:", currentTitle);
+      if (!newTitle) return;
+
+      const newStatus = prompt("Update status (Completed or Pending):", currentStatus);
+      if (!["Completed", "Pending"].includes(newStatus)) {
+        alert("Status must be either 'Completed' or 'Pending'");
+        return;
+      }
+
+      try {
+        const res = await fetch(`${baseURL}/${id}`, {
+          method: 'PATCH',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ title: newTitle, status: newStatus })
+        });
+        if (!res.ok) throw new Error("Failed to update task");
+        fetchTasks(); // Refresh UI
+      } catch (err) {
+        alert("Error updating task.");
+        console.error(err);
+      }
+    }
+
+    async function deleteTask(id) {
+      if (!confirm("Are you sure you want to delete this task?")) return;
+
+      try {
+        const res = await fetch(`${baseURL}/${id}`, {
+          method: 'DELETE'
+        });
+        if (!res.ok) throw new Error("Delete failed");
+        fetchTasks();
+      } catch (err) {
+        alert("Failed to delete task.");
+        console.error(err);
+      }
+    }
+
+    // Initial load
+    fetchTasks();
+  </script>
+</body>
+</html>
